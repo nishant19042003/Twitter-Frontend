@@ -1,12 +1,17 @@
-import React from 'react'
+import React, { use } from 'react'
 import {
   ThumbsUp,
   MessageCircle,
   Repeat,
 } from "lucide-react";
-
+import { useState } from 'react';
+import LikeBtn from './LikeBtn';
+import ReplyBox from '../pages/ReplyBox';
 function TweetCard({tweet}) {
-    
+  const [visible,setvisible]=useState();
+  const onclose=()=>{
+    setvisible(prev=>!prev);
+  }
   return (
     
     <div
@@ -38,19 +43,20 @@ function TweetCard({tweet}) {
 
     {/* Tweet Actions */}
     <div className="flex gap-6 mt-4 text-gray-500 text-sm">
-        <button className="flex items-center gap-1 hover:text-blue-600 transition">
-        <ThumbsUp className="w-4 h-4" />
-        Like
-        </button>
-        <button className="flex items-center gap-1 hover:text-blue-600 transition">
+        <LikeBtn type="tweet" contentId={tweet._id} key={tweet._id} />
+        <button className="flex items-center gap-1 hover:text-blue-600 transition" onClick={onclose} >
         <MessageCircle className="w-4 h-4" />
-        Comment
+        Reply
         </button>
         <button className="flex items-center gap-1 hover:text-blue-600 transition">
         <Repeat className="w-4 h-4" />
         Retweet
         </button>
     </div>
+
+    {
+      visible&&<ReplyBox onclose={onclose} tweet_id={tweet._id}/>
+    }
     </div>
        
   )

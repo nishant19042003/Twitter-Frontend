@@ -1,6 +1,6 @@
 import React from 'react'
 import axiosInstance from '../baseinstance/axiosInstance'
-export const getUser = async () => {
-  const response = await axiosInstance.get(`/user/getprofile`);
+export const getUser = async (id) => {
+  const response = await axiosInstance.get(`/user/getprofile/${id}`);
   return response.data;
 }

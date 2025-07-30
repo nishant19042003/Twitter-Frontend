@@ -3,6 +3,7 @@ import React from 'react'
 //niche tweets jisme like and comment and retweet
 import getAllTweets from '../endpoints/tweetapi/getalltweet';
 import Tweetpage from '../components/Tweetpage';
+import ProfileCard from '../components/ProfileCard';
 function Home() {
   const [tweets, setTweets] = React.useState([]);
   React.useEffect(() => {
@@ -33,6 +34,7 @@ function Home() {
   return (
     <div className="flex flex-col items-center justify-center">
       <h1 className="text-2xl font-bold mb-4">Home</h1>
+      <ProfileCard/>
       <Tweetpage tweets={tweets} />
     </div>
   )

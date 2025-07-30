@@ -5,7 +5,7 @@ function Tweetpage({ tweets }) {
   return (
     <div  className="mt-6 space-y-6">
         {tweets.map((tweet) => (
-          <TweetCard tweet={tweet}/>
+          <TweetCard tweet={tweet} key={tweet._id}/>
           
         ))}
     </div>

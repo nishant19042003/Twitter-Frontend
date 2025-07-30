@@ -1,9 +1,9 @@
 import React from 'react';
 import { CheckCircle2 } from 'lucide-react';
-
 const UserCard = ({ user }) => {
+  
   return (
-    <div className="w-[95%] max-w-2xl h-20 flex items-center gap-4 px-4 py-3 bg-white border border-blue-600 rounded-xl shadow-md transition hover:shadow-lg hover:bg-blue-50 cursor-pointer">
+    <div  className="w-[95%] max-w-2xl h-20 flex items-center gap-4 px-4 py-3 bg-white border border-blue-600 rounded-xl shadow-md transition hover:shadow-lg hover:bg-blue-50 cursor-pointer">
       <img
         src={user.avatar_url}
         alt={user.username}

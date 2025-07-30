@@ -3,7 +3,7 @@ import React from 'react';
 import { CheckCircle2 } from 'lucide-react';
 
 const MessageItem = ({ message, isOwnMessage }) => {
-  const { sender, content, media } = message;
+  const { sender, content, media, recipient } = message;
 
   return (
     <div className={`flex ${isOwnMessage ? 'justify-end' : 'justify-start'} mb-4`}>
@@ -11,11 +11,13 @@ const MessageItem = ({ message, isOwnMessage }) => {
         {/* Avatar and Star */}
         <div className="relative">
           <img
-            src={sender.avatar_url}
-            alt={sender.username}
+            src={`${isOwnMessage ? sender.avatar_url : recipient?.avatar_url}`}
+            alt={isOwnMessage ? sender.username : recipient?.username}
             className="w-10 h-10 rounded-full border-2 border-blue-600 object-cover"
           />
-          {sender.varified && (
+          {isOwnMessage ? sender.varified && (
+            <CheckCircle2 className="absolute -bottom-1 -right-1 w-4 h-4 text-blue-600 bg-white rounded-full" />
+          ) : recipient?.varified && (
             <CheckCircle2 className="absolute -bottom-1 -right-1 w-4 h-4 text-blue-600 bg-white rounded-full" />
           )}
         </div>
@@ -27,7 +29,7 @@ const MessageItem = ({ message, isOwnMessage }) => {
           }`}
         >
           <div className="text-sm font-semibold text-gray-800 mb-1">
-            @{sender.username}
+            @{isOwnMessage ? sender.username : recipient?.username}
           </div>
           <div className="text-gray-700 text-base">{content}</div>
 

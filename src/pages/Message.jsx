@@ -26,7 +26,7 @@ function Message() {
           <div 
             key={user._id} 
             className="cursor-pointer"
-            onClick={() => navigate(`/chat`)} // Navigate to chat page with user ID
+            onClick={() => navigate(`/chat/${user._id}`)} // Navigate to chat page with user ID
           >
             <UserCard key={user._id} user={user}  />
           </div>
