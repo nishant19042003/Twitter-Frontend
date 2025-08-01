@@ -32,7 +32,7 @@ function CommunityCard({ community }) {
 
   return (
     <div
-      onClick={toggle}
+      
       className={`group cursor-pointer bg-white shadow-lg rounded-2xl p-6 max-w-md mx-auto my-4 transition-transform hover:scale-[1.02]
         ${loading ? 'opacity-50 pointer-events-none' : ''}
       `}
@@ -52,7 +52,7 @@ function CommunityCard({ community }) {
       </div>
 
       <div className="mt-6 text-center">
-        <span
+        <span onClick={toggle}
           className={`px-5 py-2 inline-block rounded-full font-medium transition-colors duration-200
             ${member ? 'bg-black text-white' : 'bg-blue-600 text-white'}
           `}

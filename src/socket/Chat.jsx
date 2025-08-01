@@ -7,6 +7,7 @@ import MessageItem from '../components/MessageItem';
 import { CheckCircle2 } from 'lucide-react';
 import { useParams } from 'react-router-dom';
 import { getUser } from '../endpoints/userapis/getProfile'; // Adjust the import based on your project structure
+import GetPairMessages from '../endpoints/message/PairMessages';
 const Chat = () => {
   const { recipientId } = useParams();
   const currentUser = useSelector((state) => state.user?.user);
@@ -17,7 +18,9 @@ const Chat = () => {
     const fetchRecipient = async () => {
       try {
         const user = await getUser(recipientId);
+        const messages=await GetPairMessages(recipientId)
         setRecipient(user.data.user);
+        setMessages(messages.data)
       } catch (error) {
         console.error('Error fetching recipient:', error);
       }
@@ -42,30 +45,16 @@ const Chat = () => {
 
   const sendMessage = async (data) => {
     const roomId = [currentUserId, recipientId].sort().join('_');
-
-    // Handle media file
-    let mediaUrls = [];
-    if (data.media && data.media.length > 0) {
-      mediaUrls = Array.from(data.media).map((file) =>
-        URL.createObjectURL(file)
-      );
+    const formdata=new FormData();
+    formdata.append('content',data.content);
+    if(data.media.length>0){
+      formdata.append('media_url',data.media[0]);
     }
+    formdata.append('sendr',currentUserId);
+    formdata.append('receiver',recipientId);
 
-    const msgData = {
-      sender: {
-        _id: currentUserId,
-        username: currentUser?.username,
-        avatar_url: currentUser?.avatar_url,
-        varified: currentUser?.varified,
-      },
-      content: data.message,
-      media: mediaUrls,
-      time: new Date(),
-      recipient
-    };
-
-    socket.emit('send-message', { roomId, recipientId, ...msgData });
-    setMessages((prev) => [...prev, msgData]);
+    socket.emit('send-message', { roomId, formdata });
+    setMessages((prev) => [...prev, formdata]);
     reset();
   };
 
@@ -96,7 +85,9 @@ const Chat = () => {
           <MessageItem
             key={i}
             message={msg}
-            isOwnMessage={msg.sender?._id === currentUserId}
+            sender={currentUser}
+            recipient={recipient}
+            isOwnMessage={msg.sender._id==currentUserId?true:false}
           />
         ))}
       </div>

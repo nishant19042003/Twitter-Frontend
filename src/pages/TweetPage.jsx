@@ -1,15 +1,28 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import createtweet from '../endpoints/tweetapi/createtweet';
-
-function TweetPage() {
+import createcommunitytweet from '../endpoints/tweetapi/createCommunityTweet';
+import { useNavigate } from 'react-router-dom';
+function TweetPage({community_id,type}) {
   const { register, handleSubmit } = useForm();
-
+  console.log(type,"jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj")
+  const navigate=useNavigate();
   const submit = async (data) => {
     const formdata = new FormData();
     formdata.append('content', data.content);
     if (data.media.length > 0) formdata.append('media', data.media[0]);
-    await createtweet(formdata);
+    
+    if(!type){
+      await createtweet(formdata);
+      alert("Tweet succesfull posted ")
+      navigate(-1);
+    }
+    else if(type==='community'){
+          await createcommunitytweet(formdata,community_id);
+          alert("succesfule community tweet hurry");
+          navigate(-1);
+    }
+    
   };
 
   return (
@@ -18,7 +31,7 @@ function TweetPage() {
         onSubmit={handleSubmit(submit)}
         className="bg-white shadow-xl rounded-2xl p-6 w-full max-w-md border border-blue-200"
       >
-        <h2 className="text-xl font-semibold text-blue-600 mb-4 text-center">Post a Tweet</h2>
+        <h2 className="text-xl font-semibold text-blue-600 mb-4 text-center">Post a {type==='community'&&('Community')}  Tweet</h2>
 
         <textarea
           {...register('content', { required: true })}

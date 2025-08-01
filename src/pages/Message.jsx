@@ -21,11 +21,11 @@ function Message() {
     <div>
       <h1>Message Page</h1>
       
-      <div className="w-[100%]">
+      <div className="w-[100%] mt-1 text-center container flex-2/12">
         {users.map((user) => (
           <div 
             key={user._id} 
-            className="cursor-pointer"
+            className="cursor-pointer mt-2.5 "
             onClick={() => navigate(`/chat/${user._id}`)} // Navigate to chat page with user ID
           >
             <UserCard key={user._id} user={user}  />

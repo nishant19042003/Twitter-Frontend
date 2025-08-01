@@ -20,6 +20,7 @@ import Chat from './socket/Chat';
 import TweetPage from './pages/TweetPage';
 import CommunityForm from './components/CommunityForm';
 import CommunityProfile from './pages/CommunityProfile';
+import CommuntiyTweetFrom from './pages/CommuntiyTweetFrom';
 function App() {
   return (
     <BrowserRouter>
@@ -39,6 +40,7 @@ function App() {
           <Route path="tweet" element={<TweetPage/>}/>
           <Route path="createCommunity" element={<CommunityForm/>}/>
           <Route path="community/:community_id" element={<CommunityProfile/>}/>
+          <Route path="communityTweetForm/:community_id" element={<CommuntiyTweetFrom/>}/>
         </Route>
 
         

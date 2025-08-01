@@ -1,14 +1,16 @@
 import { useState } from "react";
 import TweetCard from "../components/TweetCard";
 import Tweetpage from "../components/Tweetpage";
+import { useSelector } from "react-redux";
 import { useEffect } from "react";
 import { getUser } from "../endpoints/userapis/getProfile";
 export default function UserProfile() {
   const [isFollowing, setIsFollowing] = useState(false);
   const [data,setdata]=useState('loading');
+  const id=useSelector(state=>state.user.user._id)
   useEffect(()=>{
     const fetchUser = async () => {
-      const userData = await getUser();
+      const userData = await getUser(id);
       console.log(userData, "userDatajdlks;lfjd;lsjfa;ljd;ljfa;ldjf;lasj;lfjsd;lfjsa;dljf;sadj;");
       setdata(userData.data);
     };

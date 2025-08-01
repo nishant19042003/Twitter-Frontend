@@ -1,37 +1,36 @@
-// components/MessageItem.jsx
 import React from 'react';
 import { CheckCircle2 } from 'lucide-react';
 
-const MessageItem = ({ message, isOwnMessage }) => {
-  const { sender, content, media, recipient } = message;
+const MessageItem = ({ message, isOwnMessage, sender, recipient }) => {
+  const { content, media } = message;
+  const user = isOwnMessage ? sender : recipient;
 
   return (
     <div className={`flex ${isOwnMessage ? 'justify-end' : 'justify-start'} mb-4`}>
       <div className={`flex gap-3 max-w-[90%] ${isOwnMessage ? 'flex-row-reverse text-right' : ''}`}>
+        
         {/* Avatar and Star */}
         <div className="relative">
           <img
-            src={`${isOwnMessage ? sender.avatar_url : recipient?.avatar_url}`}
-            alt={isOwnMessage ? sender.username : recipient?.username}
+            src={user?.avatar_url}
+            alt={user?.username}
             className="w-10 h-10 rounded-full border-2 border-blue-600 object-cover"
           />
-          {isOwnMessage ? sender.varified && (
-            <CheckCircle2 className="absolute -bottom-1 -right-1 w-4 h-4 text-blue-600 bg-white rounded-full" />
-          ) : recipient?.varified && (
+          {user?.varified && (
             <CheckCircle2 className="absolute -bottom-1 -right-1 w-4 h-4 text-blue-600 bg-white rounded-full" />
           )}
         </div>
 
         {/* Message Content */}
         <div
-          className={`bg-gray-100 px-4 py-2 rounded-xl shadow-sm ${
+          className={`px-4 py-2 rounded-xl shadow-sm ${
             isOwnMessage ? 'bg-blue-100' : 'bg-white'
           }`}
         >
           <div className="text-sm font-semibold text-gray-800 mb-1">
-            @{isOwnMessage ? sender.username : recipient?.username}
+            @{user?.username}
           </div>
-          <div className="text-gray-700 text-base">{content}</div>
+          <div className="text-gray-700 text-base whitespace-pre-wrap">{content}</div>
 
           {/* Media Rendering */}
           {media && media.length > 0 && (
