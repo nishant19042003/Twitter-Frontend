@@ -18,6 +18,8 @@ import ReplyBox from './pages/ReplyBox';
 import './index.css';
 import Chat from './socket/Chat';
 import TweetPage from './pages/TweetPage';
+import CommunityForm from './components/CommunityForm';
+import CommunityProfile from './pages/CommunityProfile';
 function App() {
   return (
     <BrowserRouter>
@@ -35,6 +37,8 @@ function App() {
           <Route path="profile" element={<Profile/>} />
           <Route path="chat/:recipientId" element={<Chat />} />
           <Route path="tweet" element={<TweetPage/>}/>
+          <Route path="createCommunity" element={<CommunityForm/>}/>
+          <Route path="community/:community_id" element={<CommunityProfile/>}/>
         </Route>
 
         
