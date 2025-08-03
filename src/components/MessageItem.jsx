@@ -2,9 +2,9 @@ import React from 'react';
 import { CheckCircle2 } from 'lucide-react';
 
 const MessageItem = ({ message, isOwnMessage, sender, recipient }) => {
-  const { content, media } = message;
+  const { content, media_url } = message;
   const user = isOwnMessage ? sender : recipient;
-
+   
   return (
     <div className={`flex ${isOwnMessage ? 'justify-end' : 'justify-start'} mb-4`}>
       <div className={`flex gap-3 max-w-[90%] ${isOwnMessage ? 'flex-row-reverse text-right' : ''}`}>
@@ -33,16 +33,16 @@ const MessageItem = ({ message, isOwnMessage, sender, recipient }) => {
           <div className="text-gray-700 text-base whitespace-pre-wrap">{content}</div>
 
           {/* Media Rendering */}
-          {media && media.length > 0 && (
+          {media_url && (
             <div className="mt-2 grid gap-2">
-              {media.map((url, i) => (
+              
                 <img
-                  key={i}
-                  src={url}
-                  alt={`media-${i}`}
+                  
+                  src={media_url}
+                  alt={`jai hind`}
                   className="rounded-lg max-h-64 object-cover border border-gray-300"
                 />
-              ))}
+            
             </div>
           )}
         </div>

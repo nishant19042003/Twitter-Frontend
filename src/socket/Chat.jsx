@@ -8,6 +8,8 @@ import { CheckCircle2 } from 'lucide-react';
 import { useParams } from 'react-router-dom';
 import { getUser } from '../endpoints/userapis/getProfile'; // Adjust the import based on your project structure
 import GetPairMessages from '../endpoints/message/PairMessages';
+import SendMessage from '../endpoints/message/SendMessage';
+import SendMessageWithMedia from '../endpoints/message/SendMessageWithMedia';
 const Chat = () => {
   const { recipientId } = useParams();
   const currentUser = useSelector((state) => state.user?.user);
@@ -30,31 +32,35 @@ const Chat = () => {
   const { register, handleSubmit, reset } = useForm();
 
   useEffect(() => {
-    const roomId = [currentUserId, recipientId].sort().join('_');
-    socket.emit('join_chat', roomId);
-    console.log(`Joined room: ${roomId}`);
+    
+    socket.emit('join_chat', recipientId);
+    //receive
     socket.on("receive-message", (data) => {
-      console.log("Received message:", data);
+      console.log(data,"jjjjjjjjjjjjjjjjjjjjjjjjjjjj");
       setMessages((prev) => [...prev, data]);
     });
+    
 
     return () => {
       socket.off('receive-message');
     };
-  }, [currentUserId, recipientId, messages]);
-
-  const sendMessage = async (data) => {
-    const roomId = [currentUserId, recipientId].sort().join('_');
+  }, []);
+  
+  const createMessage = async (data) => {
+    let message=null;
     const formdata=new FormData();
-    formdata.append('content',data.content);
-    if(data.media.length>0){
-      formdata.append('media_url',data.media[0]);
+    formdata.append("content",data.message);
+    if(data.media?.length||0>0){
+      formdata.append("media",data.media[0]);
+      const res=await SendMessageWithMedia(recipientId,formdata);
+      message=res.data;
     }
-    formdata.append('sendr',currentUserId);
-    formdata.append('receiver',recipientId);
-
-    socket.emit('send-message', { roomId, formdata });
-    setMessages((prev) => [...prev, formdata]);
+    else{
+      const res=await SendMessage(recipientId,formdata);
+      message=res.data;
+    }
+    socket.emit('send-message', { currentUserId, message });
+    setMessages((prev) => [...prev,message ]);
     reset();
   };
 
@@ -81,20 +87,20 @@ const Chat = () => {
 
       {/* Message List */}
       <div className="overflow-y-auto flex-1 space-y-2 mb-4">
-        {messages.map((msg, i) => (
+        {messages.map((msg,i) => (
           <MessageItem
             key={i}
             message={msg}
             sender={currentUser}
             recipient={recipient}
-            isOwnMessage={msg.sender._id==currentUserId?true:false}
+            isOwnMessage={msg.sender===currentUserId?true:false}
           />
         ))}
       </div>
 
       {/* Message Form */}
       <form
-        onSubmit={handleSubmit(sendMessage)}
+        onSubmit={handleSubmit(createMessage)}
         className="flex items-center gap-2 border-t pt-3 bg-white p-3 rounded-xl shadow"
       >
         <input
